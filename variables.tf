@@ -13,3 +13,11 @@ variable "vpc_cidr" {
 variable "env_name" {
   default = "dev"
 }
+
+data "aws_eks_cluster" "cluster" {
+  name = data.terraform_remote_state.base_remote_state.outputs.eks_cluster_id
+}
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = data.terraform_remote_state.base_remote_state.outputs.eks_cluster_id
+}
