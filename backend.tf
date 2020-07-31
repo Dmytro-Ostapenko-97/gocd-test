@@ -4,6 +4,6 @@ terraform {
     bucket = "jackbot-greg-solution-terraform-state"
     key = "gocd-test.tfstate"
     region = "us-east-1"
-    dynamodb_table = "terraform-remote-state-lock-db"
+    //dynamodb_table = "terraform-remote-state-lock-db"
   }
 }
