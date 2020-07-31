@@ -1,6 +1,6 @@
 pipelines:
   test:
-    group: default
+    group: test
     lock_behavior: none
     environment_variables:
       IMAGE: dummy
