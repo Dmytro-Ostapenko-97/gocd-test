@@ -1,0 +1,6 @@
+**/credentials
+.idea
+.terraform
+*.pem
+*.ppk
+**/variables.tfvars
