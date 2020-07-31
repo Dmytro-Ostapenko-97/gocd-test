@@ -28,7 +28,7 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "apk add jq -y \ 
+                      - "apk add jq \ 
                         && bash kubectl-plugin.sh \
                         && terraform init \
                         && terraform destroy -auto-approve"
