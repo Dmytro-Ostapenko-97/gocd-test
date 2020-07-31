@@ -28,11 +28,7 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "sudo apk update \ 
-                        && sudo apk add jq \ 
-                        && bash kubectl-plugin.sh \
-                        && terraform init \
-                        && terraform destroy -auto-approve"
+                      - "terraform init && terraform destroy -auto-approve"
                     command: sh
                     run_if: passed
       # - terraform-destroy:
