@@ -13,24 +13,6 @@ pipelines:
         auto_update: true
         branch: master
     stages:
-      - terraform-init:
-          fetch_materials: true
-          keep_artifacts: false
-          clean_workspace: true
-          approval:
-            type: manual
-            allow_only_on_success: false
-          jobs:
-            check:
-              timeout: 0
-              elastic_profile_id: k8s-agent
-              tasks:
-                - exec:
-                    arguments:
-                      - "-c"
-                      - "terraform init"
-                    command: sh
-                    run_if: passed
       - terraform-destroy:
           fetch_materials: true
           keep_artifacts: false
@@ -45,7 +27,43 @@ pipelines:
               tasks:
                 - exec:
                     arguments:
-                      - -c
-                      - "terraform plan"
+                      - "-c"
+                      - "terraform init && terraform destroy -auto-approve"
                     command: sh
                     run_if: passed
+      # - terraform-destroy:
+      #     fetch_materials: true
+      #     keep_artifacts: false
+      #     clean_workspace: true
+      #     approval:
+      #       type: approval
+      #       allow_only_on_success: true
+      #     jobs:
+      #       check:
+      #         timeout: 0
+      #         elastic_profile_id: k8s-agent
+      #         tasks:
+      #           - exec:
+      #               arguments:
+      #                 - "-c"
+      #                 - "terraform init && terraform plan"
+      #               command: sh
+      #               run_if: passed                    
+      # - terraform-destroy:
+      #     fetch_materials: true
+      #     keep_artifacts: false
+      #     clean_workspace: true
+      #     approval:
+      #       type: manual
+      #       allow_only_on_success: false
+      #     jobs:
+      #       check:
+      #         timeout: 0
+      #         elastic_profile_id: k8s-agent
+      #         tasks:
+      #           - exec:
+      #               arguments:
+      #                 - -c
+      #                 - "terraform plan"
+      #               command: sh
+      #               run_if: passed
