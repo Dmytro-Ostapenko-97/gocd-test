@@ -3,9 +3,9 @@ pipelines:
     group: test
     lock_behavior: none
     environment_variables:
-      IMAGE: dummy
-      APP_NAME: dima
-      NAMESPACE: application
+      # IMAGE: dummy
+      # APP_NAME: dima
+      # NAMESPACE: application
     materials:
       git:
         git: https://github.com/Dmytro-Ostapenko-97/gocd-test
@@ -28,7 +28,7 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "rm -rf .terraform/ && terraform init -reconfigure && terraform destroy -auto-approve"
+                      - "terraform init && terraform destroy -auto-approve"
                     command: sh
                     run_if: passed
       # - terraform-destroy:
