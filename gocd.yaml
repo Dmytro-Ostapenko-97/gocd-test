@@ -28,7 +28,7 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "bash kubectl-plugin.sh && terraform init && terraform destroy -auto-approve"
+                      - "apt install jq -y && bash kubectl-plugin.sh && terraform init && terraform destroy -auto-approve"
                     command: sh
                     run_if: passed
       # - terraform-destroy:
