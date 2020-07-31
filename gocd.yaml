@@ -1,0 +1,51 @@
+pipelines:
+  test:
+    group: default
+    lock_behavior: none
+    environment_variables:
+      IMAGE: dummy
+      APP_NAME: mybotgarage-streamservice
+      NAMESPACE: application
+    materials:
+      git:
+        git: https://bitbucket.org/jack_bot/streamservice.git
+        shallow_clone: false
+        auto_update: true
+        branch: master
+    stages:
+      - terraform-init:
+          fetch_materials: true
+          keep_artifacts: false
+          clean_workspace: true
+          approval:
+            type: manual
+            allow_only_on_success: false
+          jobs:
+            check:
+              timeout: 0
+              #elastic_profile_id: k8s-agent
+              tasks:
+                - exec:
+                    arguments:
+                      - "-c"
+                      - "terraform init"
+                    command: sh
+                    run_if: passed
+      - terraform-destroy:
+          fetch_materials: true
+          keep_artifacts: false
+          clean_workspace: true
+          approval:
+            type: manual
+            allow_only_on_success: false
+          jobs:
+            plan:
+              timeout: 0
+              #elastic_profile_id: k8s-agent
+              tasks:
+                - exec:
+                    arguments:
+                      - -c
+                      - "terraform plan"
+                    command: sh
+                    run_if: passed
