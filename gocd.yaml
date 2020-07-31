@@ -23,7 +23,7 @@ pipelines:
           jobs:
             check:
               timeout: 0
-              #elastic_profile_id: k8s-agent
+              elastic_profile_id: k8s-agent
               tasks:
                 - exec:
                     arguments:
@@ -41,7 +41,7 @@ pipelines:
           jobs:
             check:
               timeout: 0
-              #elastic_profile_id: k8s-agent
+              elastic_profile_id: k8s-agent
               tasks:
                 - exec:
                     arguments:
