@@ -28,8 +28,8 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "apk update \ 
-                        && apk add jq \ 
+                      - "sudo apk update \ 
+                        && sudo apk add jq \ 
                         && bash kubectl-plugin.sh \
                         && terraform init \
                         && terraform destroy -auto-approve"
