@@ -13,24 +13,6 @@ pipelines:
         auto_update: true
         branch: master
     stages:
-      # - clean_workspace:
-      #     fetch_materials: true
-      #     keep_artifacts: false
-      #     clean_workspace: true
-      #     approval:
-      #       type: manual
-      #       allow_only_on_success: false
-      #     jobs:
-      #       check:
-      #         timeout: 0
-      #         elastic_profile_id: k8s-agent
-      #         tasks:
-      #           - exec:
-      #               arguments:
-      #                 - "-c"
-      #                 - "rm -rf .terraform/"
-      #               command: sh
-      #               run_if: passed
       - terraform-destroy:
           fetch_materials: true
           keep_artifacts: false
@@ -46,7 +28,7 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "terraform init -reconfigure && terraform destroy -auto-approve"
+                      - "rm -rf .terraform/ && terraform init -reconfigure && terraform destroy -auto-approve"
                     command: sh
                     run_if: passed
       # - terraform-destroy:
