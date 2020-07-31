@@ -4,11 +4,11 @@ pipelines:
     lock_behavior: none
     environment_variables:
       IMAGE: dummy
-      APP_NAME: mybotgarage-streamservice
+      APP_NAME: dima
       NAMESPACE: application
     materials:
       git:
-        git: https://bitbucket.org/jack_bot/streamservice.git
+        git: https://github.com/Dmytro-Ostapenko-97/gocd-test
         shallow_clone: false
         auto_update: true
         branch: master
