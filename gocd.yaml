@@ -38,24 +38,6 @@ pipelines:
             type: manual
             allow_only_on_success: false
           jobs:
-            check:
-              timeout: 0
-              elastic_profile_id: k8s-agent
-              tasks:
-                - exec:
-                    arguments:
-                      - "-c"
-                      - "if [ ${IsValid,,} == "y"  ] || [ ${IsValid,,} == "yes" ] || [ ${IsValid,,} = "true" ]; then exit 0; else exit 1; fi"
-                    command: /bin/bash
-                    run_if: passed  
-      - test-parameters:
-          fetch_materials: true
-          keep_artifacts: false
-          clean_workspace: true
-          approval:
-            type: manual
-            allow_only_on_success: false
-          jobs:
             echo:
               timeout: 0
               elastic_profile_id: k8s-agent
