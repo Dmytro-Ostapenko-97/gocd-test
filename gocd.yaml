@@ -46,7 +46,7 @@ pipelines:
                     arguments:
                       - "-c"
                       - "if [ ${IsValid,,} == "y"  ] || [ ${IsValid,,} == "yes" ] || [ ${IsValid,,} = "true" ]; then exit 0; else exit 1; fi"
-                    command: sh
+                    command: /bin/bash
                     run_if: passed  
       - test-parameters:
           fetch_materials: true
