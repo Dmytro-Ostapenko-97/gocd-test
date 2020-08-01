@@ -3,11 +3,7 @@ pipelines:
     group: test
     lock_behavior: none
     environment_variables:
-      STORE_CODE: Enter_Your_STORECODE
-      APP_NAME: 
-      NAMESPACE:
-    parameters: 
-      STORE_CODE: STORE_CODE
+      STORE_CODE: <none>
     materials:
       git:
         git: https://github.com/Dmytro-Ostapenko-97/gocd-test
@@ -46,6 +42,12 @@ pipelines:
               timeout: 0
               elastic_profile_id: k8s-agent
               tasks:
+                - exec:
+                    arguments:
+                      - "-c"
+                      - "if [ ${IsValid,,} == "y"  ] || [ ${IsValid,,} == "yes" ] || [ ${IsValid,,} = "true" ]; then exit 0; else exit 1; fi"
+                    command: sh
+                    run_if: passed  
                 - exec:
                     arguments:
                       - "-c"
