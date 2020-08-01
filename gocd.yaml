@@ -6,6 +6,8 @@ pipelines:
       # IMAGE: dummy
       # APP_NAME: dima
       # NAMESPACE: application
+    parameters: 
+      STORE_CODE: STORE_CODE
     materials:
       git:
         git: https://github.com/Dmytro-Ostapenko-97/gocd-test
@@ -13,31 +15,13 @@ pipelines:
         auto_update: true
         branch: master
     stages:
-      - terraform-destroy:
-          fetch_materials: true
-          keep_artifacts: false
-          clean_workspace: true
-          approval:
-            type: manual
-            allow_only_on_success: false
-          jobs:
-            check:
-              timeout: 0
-              elastic_profile_id: k8s-agent
-              tasks:
-                - exec:
-                    arguments:
-                      - "-c"
-                      - "terraform init && terraform destroy -auto-approve"
-                    command: sh
-                    run_if: passed
       # - terraform-destroy:
       #     fetch_materials: true
       #     keep_artifacts: false
       #     clean_workspace: true
       #     approval:
-      #       type: approval
-      #       allow_only_on_success: true
+      #       type: manual
+      #       allow_only_on_success: false
       #     jobs:
       #       check:
       #         timeout: 0
@@ -46,9 +30,30 @@ pipelines:
       #           - exec:
       #               arguments:
       #                 - "-c"
-      #                 - "terraform init && terraform plan"
+      #                 - "terraform init \
+      #                 && terraform destroy -auto-approve"
       #               command: sh
-      #               run_if: passed                    
+      #               run_if: passed
+      - test-parameters:
+          fetch_materials: true
+          keep_artifacts: false
+          clean_workspace: true
+          approval:
+            type: approval
+            allow_only_on_success: true
+          jobs:
+            check:
+              timeout: 0
+              elastic_profile_id: k8s-agent
+              tasks:
+                - exec:
+                    arguments:
+                      - "-c"
+                      - "echo ${STORE_CODE}"
+                    command: sh
+                    run_if: passed  
+
+
       # - terraform-destroy:
       #     fetch_materials: true
       #     keep_artifacts: false
