@@ -3,9 +3,9 @@ pipelines:
     group: test
     lock_behavior: none
     environment_variables:
-      # IMAGE: dummy
-      # APP_NAME: dima
-      # NAMESPACE: application
+      STORE_CODE: Enter_Your_STORECODE
+      APP_NAME: 
+      NAMESPACE:
     parameters: 
       STORE_CODE: STORE_CODE
     materials:
@@ -49,7 +49,7 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "echo #{STORE_CODE} $$ echo ${APP_NAME}"
+                      - "echo ${STORE_CODE}"
                     command: sh
                     run_if: passed  
 
