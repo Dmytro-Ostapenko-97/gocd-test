@@ -9,7 +9,6 @@ pipelines:
     parameters: 
       STORE_CODE: STORE_CODE
     materials:
-      STORE_CODE: STORE_CODE
       git:
         git: https://github.com/Dmytro-Ostapenko-97/gocd-test
         shallow_clone: false
