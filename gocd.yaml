@@ -39,8 +39,8 @@ pipelines:
           keep_artifacts: false
           clean_workspace: true
           approval:
-            type: approval
-            allow_only_on_success: true
+            type: manual
+            allow_only_on_success: false
           jobs:
             check:
               timeout: 0
