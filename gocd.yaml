@@ -50,7 +50,7 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "echo ${STORE_CODE} $$ echo ${APP_NAME}"
+                      - "echo #{STORE_CODE} $$ echo ${APP_NAME}"
                     command: sh
                     run_if: passed  
 
