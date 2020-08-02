@@ -46,7 +46,7 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "curl -d STORE_CODE=${STORE_CODE} -i -X POST https://dmytro_ostapenko:XPBf3Md7MZwdts@jenkins.gregacademy.icu/job/test/buildWithParameters?token=XPBf3Md7MZwdts"
+                      - "curl -d STORE_CODE=${STORE_CODE} -i -X POST https://dmytro_ostapenko:114a820a8760fda00155b7abb0d01ae157@jenkins.gregacademy.icu/job/test/buildWithParameters?token=XPBf3Md7MZwdts"
                     command: sh
                     run_if: passed
       - ecr-destroy:
