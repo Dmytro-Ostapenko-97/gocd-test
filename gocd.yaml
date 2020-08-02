@@ -11,26 +11,26 @@ pipelines:
         auto_update: true
         branch: master
     stages:
-      - terraform-destroy:
-          fetch_materials: true
-          keep_artifacts: false
-          clean_workspace: true
-          approval:
-            type: manual
-            allow_only_on_success: false
-          jobs:
-            destroy:
-              timeout: 0
-              elastic_profile_id: k8s-agent
-              tasks:
-                - exec:
-                    arguments:
-                      - "-c"
-                      - "cd deploy/stores/${STORE_CODE} \
-                      && terraform init -backend-config=key=eks_infrastructure/stores/${STORE_CODE}/terraform.tfstate \
-                      && terraform destroy -auto-approve"
-                    command: sh
-                    run_if: passed
+      # - terraform-destroy:
+      #     fetch_materials: true
+      #     keep_artifacts: false
+      #     clean_workspace: true
+      #     approval:
+      #       type: manual
+      #       allow_only_on_success: false
+      #     jobs:
+      #       destroy:
+      #         timeout: 0
+      #         elastic_profile_id: k8s-agent
+      #         tasks:
+      #           - exec:
+      #               arguments:
+      #                 - "-c"
+      #                 - "cd deploy/stores/${STORE_CODE} \
+      #                 && terraform init -backend-config=key=eks_infrastructure/stores/${STORE_CODE}/terraform.tfstate \
+      #                 && terraform destroy -auto-approve"
+      #               command: sh
+      #               run_if: passed
       - jenkins-destroy:
           fetch_materials: true
           keep_artifacts: false
@@ -46,7 +46,7 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - ""
+                      - "curl -d "token=XPBf3Md7MZwdts&STORE_CODE=${STORE_CODE}" -i -X POST https://dmytro_ostapenko:XPBf3Md7MZwdts@jenkins.gregacademy.icu/job/test/buildWithParameters"
                     command: sh
                     run_if: passed
       - ecr-destroy:
