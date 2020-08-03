@@ -66,14 +66,11 @@ pipelines:
           jobs:
             destroy:
               timeout: 0
-              elastic_profile_id: k8s-agent
+              elastic_profile_id: k8s-agent-aws
               tasks:
                 - exec:
                     arguments:
                       - "-c"
-                      - "curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip \
-                      && unzip awscliv2.zip \
-                      && ./aws/install -i ./ -b ./ \
-                      && aws ecr delete-repository --repository-name ${STORE_CODE} --force"
+                      - "aws ecr delete-repository --repository-name ${STORE_CODE} --force"
                     command: sh
                     run_if: passed
