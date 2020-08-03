@@ -66,7 +66,7 @@ pipelines:
           jobs:
             destroy:
               timeout: 0
-              elastic_profile_id: k8s-agent-aws
+              elastic_profile_id: k8-agent-aws
               tasks:
                 - exec:
                     arguments:
