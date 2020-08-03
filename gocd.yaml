@@ -71,6 +71,6 @@ pipelines:
                 - exec:
                     arguments:
                       # - "aws ecr delete-repository --repository-name ${STORE_CODE} --force"
-                      - "-- verision"                      
-                    command: sh
+                      - "--verision"                      
+                    #command: sh
                     run_if: passed
