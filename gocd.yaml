@@ -70,6 +70,7 @@ pipelines:
               tasks:
                 - exec:
                     arguments:
-                      - "aws ecr delete-repository --repository-name ${STORE_CODE} --force"
+                      # - "aws ecr delete-repository --repository-name ${STORE_CODE} --force"
+                      - "-- verision"                      
                     command: sh
                     run_if: passed
