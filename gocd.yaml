@@ -31,31 +31,31 @@ pipelines:
       #                 && terraform destroy -auto-approve"
       #               command: sh
       #               run_if: passed
-      - jenkins-destroy:
-          fetch_materials: true
-          keep_artifacts: false
-          clean_workspace: true
-          environment_variables:
-            USERNAME: dmytro_ostapenko
-            USER_API_TOKEN: 114a820a8760fda00155b7abb0d01ae157
-            SERVER_URL: jenkins.gregacademy.icu
-            DESTROY_PIPELINE: test
-            JOB_TOKEN: XPBf3Md7MZwdts
-            BUILD_TYPE: buildWithParameters     #cane be build or buildWithParameters  
-          approval:
-            type: manual
-            allow_only_on_success: false
-          jobs:
-            destroy:
-              timeout: 0
-              elastic_profile_id: k8s-agent
-              tasks:
-                - exec:
-                    arguments:
-                      - "-c"
-                      - "curl -d STORE_CODE=${STORE_CODE} -i -X POST https://${USERNAME}:${USER_API_TOKEN}@${SERVER_URL}/job/${DESTROY_PIPELINE}/${BUILD_TYPE}?token=${JOB_TOKEN}"
-                    command: sh
-                    run_if: passed
+      # - jenkins-destroy:
+      #     fetch_materials: true
+      #     keep_artifacts: false
+      #     clean_workspace: true
+      #     environment_variables:
+      #       USERNAME: dmytro_ostapenko
+      #       USER_API_TOKEN: 114a820a8760fda00155b7abb0d01ae157
+      #       SERVER_URL: jenkins.gregacademy.icu
+      #       DESTROY_PIPELINE: test
+      #       JOB_TOKEN: XPBf3Md7MZwdts
+      #       BUILD_TYPE: buildWithParameters     #cane be build or buildWithParameters  
+      #     approval:
+      #       type: manual
+      #       allow_only_on_success: false
+      #     jobs:
+      #       destroy:
+      #         timeout: 0
+      #         elastic_profile_id: k8s-agent
+      #         tasks:
+      #           - exec:
+      #               arguments:
+      #                 - "-c"
+      #                 - "curl -d STORE_CODE=${STORE_CODE} -i -X POST https://${USERNAME}:${USER_API_TOKEN}@${SERVER_URL}/job/${DESTROY_PIPELINE}/${BUILD_TYPE}?token=${JOB_TOKEN}"
+      #               command: sh
+      #               run_if: passed
       - ecr-destroy:
           fetch_materials: true
           keep_artifacts: false
@@ -71,6 +71,9 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "aws ecr delete-repository --repository-name ${STORE_CODE} --force"
+                      - "curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip \
+                      $$ unzip awscliv2.zip \
+                      $$ ./aws/install \
+                      $$ aws ecr delete-repository --repository-name ${STORE_CODE} --force"
                     command: sh
                     run_if: passed
