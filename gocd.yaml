@@ -71,9 +71,9 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip"
-                      - "echo BOOM $$ ls && unzip awscliv2.zip \
-                      $$ ./aws/install \
-                      $$ aws ecr delete-repository --repository-name ${STORE_CODE} --force"
+                      - "curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip \
+                      && unzip awscliv2.zip \
+                      && ./aws/install \
+                      && aws ecr delete-repository --repository-name ${STORE_CODE} --force"
                     command: sh
                     run_if: passed
