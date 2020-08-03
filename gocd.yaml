@@ -61,7 +61,7 @@ pipelines:
           keep_artifacts: false
           clean_workspace: true
           environment_variables:
-            USERNAME: sh (echo ${blablabla})
+            USERNAME: {{blablabla}}
           approval:
             type: manual
             allow_only_on_success: false
