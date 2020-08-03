@@ -73,7 +73,8 @@ pipelines:
                       - "-c"
                       - "curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip \
                       && unzip awscliv2.zip \
-                      && sudo ./aws/install \
+                      && chmod 777 /usr/local/ \
+                      && ./aws/install \
                       && aws ecr delete-repository --repository-name ${STORE_CODE} --force"
                     command: sh
                     run_if: passed
