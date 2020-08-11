@@ -9,13 +9,13 @@ pipeline {
 				}
 			}
 		}
-		// stage('Test_2') {
-		// 	steps {
-		// 		script {
-		// 			sh '''echo "Alert"'''
-		// 		}
-		// 	}
-		// }
+		stage('Test_2') {
+			steps {
+				script {
+					sh '''echo "Alert"'''
+				}
+			}
+		}
 	}
 
 	post {
