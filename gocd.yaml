@@ -11,58 +11,55 @@ pipelines:
         auto_update: true
         branch: master
     stages:
-      # - terraform-destroy:
-      #     fetch_materials: true
-      #     keep_artifacts: false
-      #     clean_workspace: true
-      #     approval:
-      #       type: manual
-      #       allow_only_on_success: false
-      #     jobs:
-      #       destroy:
-      #         timeout: 0
-      #         elastic_profile_id: k8s-agent
-      #         tasks:
-      #           - exec:
-      #               arguments:
-      #                 - "-c"
-      #                 - "cd deploy/stores/${STORE_CODE} \
-      #                 && terraform init -backend-config=key=eks_infrastructure/stores/${STORE_CODE}/terraform.tfstate \
-      #                 && terraform destroy -auto-approve"
-      #               command: sh
-      #               run_if: passed
-      # - jenkins-destroy:
-      #     fetch_materials: true
-      #     keep_artifacts: false
-      #     clean_workspace: true
-      #     environment_variables:
-      #       USERNAME: dmytro_ostapenko
-      #       USER_API_TOKEN: 114a820a8760fda00155b7abb0d01ae157
-      #       SERVER_URL: jenkins.gregacademy.icu
-      #       DESTROY_PIPELINE: test
-      #       JOB_TOKEN: XPBf3Md7MZwdts
-      #       BUILD_TYPE: buildWithParameters     #cane be build or buildWithParameters  
-      #     approval:
-      #       type: manual
-      #       allow_only_on_success: false
-      #     jobs:
-      #       destroy:
-      #         timeout: 0
-      #         elastic_profile_id: k8s-agent
-      #         tasks:
-      #           - exec:
-      #               arguments:
-      #                 - "-c"
-      #                 - "curl -d STORE_CODE=${STORE_CODE} -i -X POST https://${USERNAME}:${USER_API_TOKEN}@${SERVER_URL}/job/${DESTROY_PIPELINE}/${BUILD_TYPE}?token=${JOB_TOKEN}"
-      #               command: sh
-      #               run_if: passed
+      - terraform-destroy:
+          fetch_materials: true
+          keep_artifacts: false
+          clean_workspace: true
+          approval:
+            type: auto
+            allow_only_on_success: true
+          jobs:
+            destroy:
+              timeout: 0
+              elastic_profile_id: k8s-agent
+              tasks:
+                - exec:
+                    arguments:
+                      - "-c"
+                      - "cd deploy/stores/${STORE_CODE} \
+                      && terraform init -backend-config=key=eks_infrastructure/stores/${STORE_CODE}/terraform.tfstate \
+                      && terraform destroy -auto-approve"
+                    command: sh
+                    run_if: passed
+      - jenkins-destroy:
+          fetch_materials: true
+          keep_artifacts: false
+          clean_workspace: true
+          environment_variables:
+            USERNAME: devops
+            USER_API_TOKEN: 11dfe8e93fcdfffb1442a502ff08b227bb
+            SERVER_URL: jenkins.gregacademy.icu  
+          approval:
+            type: auto
+            allow_only_on_success: true
+          jobs:
+            destroy:
+              timeout: 0
+              elastic_profile_id: k8s-agent
+              tasks:
+                - exec:
+                    arguments:
+                      - "-c"
+                      - "curl -XPOST https://${SERVER_URL}/job/${STORE_CODE}/doDelete --user ${USERNAME}:${USER_API_TOKEN}"
+                    command: sh
+                    run_if: passed
       - ecr-destroy:
           fetch_materials: true
           keep_artifacts: false
           clean_workspace: true
           approval:
-            type: manual
-            allow_only_on_success: false
+            type: auto
+            allow_only_on_success: true
           jobs:
             destroy:
               timeout: 0
