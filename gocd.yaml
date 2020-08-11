@@ -57,6 +57,8 @@ pipelines:
           fetch_materials: true
           keep_artifacts: false
           clean_workspace: true
+          environment_variables:
+            USERNAME: "${blablabla}"
           approval:
             type: auto
             allow_only_on_success: true
@@ -68,6 +70,6 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "aws ecr delete-repository --repository-name ${STORE_CODE} --force"                     
+                      - "echo ${USERNAME} && echo ${blablabla}"                     
                     command: sh
                     run_if: passed
