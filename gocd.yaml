@@ -1,75 +1,51 @@
 pipelines:
-  test:
-    group: test
+  xbottrade-bot-app-deploy-test:
+    group: default
     lock_behavior: none
     environment_variables:
-      STORE_CODE: <none>
+      CLUSTER_NAME: test
+      SERVICE_NAME: test
     materials:
       git:
-        git: https://github.com/Dmytro-Ostapenko-97/gocd-test
+        git: https://github.com/Dmytro-Ostapenko-97/gocd-test.git
         shallow_clone: false
         auto_update: true
-        branch: master
+        branch: dev
     stages:
-      - terraform-destroy:
+      - ready-for-deploy:
           fetch_materials: true
           keep_artifacts: false
           clean_workspace: true
           approval:
-            type: auto
-            allow_only_on_success: true
+            type: manual
+            allow_only_on_success: false
           jobs:
-            destroy:
+            check:
               timeout: 0
               elastic_profile_id: k8s-agent
               tasks:
                 - exec:
                     arguments:
                       - "-c"
-                      - "cd deploy/stores/${STORE_CODE} \
-                      && terraform init -backend-config=key=eks_infrastructure/stores/${STORE_CODE}/terraform.tfstate \
-                      && terraform destroy -auto-approve"
+                      - "echo ${CLUSTER_NAME}"
+                      - "aws ecs list-tasks --desired-status 'RUNNING' --cluster ${CLUSTER_NAME} | grep arn | sed 's/[ \"]//g'"
                     command: sh
                     run_if: passed
-      - jenkins-destroy:
+      - deploy:
           fetch_materials: true
           keep_artifacts: false
           clean_workspace: true
-          environment_variables:
-            USERNAME: devops
-            USER_API_TOKEN: 11dfe8e93fcdfffb1442a502ff08b227bb
-            SERVER_URL: jenkins.gregacademy.icu  
           approval:
-            type: auto
-            allow_only_on_success: true
+            type: manual
+            allow_only_on_success: false
           jobs:
-            destroy:
+            deploy:
               timeout: 0
               elastic_profile_id: k8s-agent
               tasks:
                 - exec:
                     arguments:
                       - "-c"
-                      - "curl -XPOST https://${SERVER_URL}/job/${STORE_CODE}/doDelete --user ${USERNAME}:${USER_API_TOKEN}"
-                    command: sh
-                    run_if: passed
-      - ecr-destroy:
-          fetch_materials: true
-          keep_artifacts: false
-          clean_workspace: true
-          environment_variables:
-            USERNAME: "${blablabla}"
-          approval:
-            type: auto
-            allow_only_on_success: true
-          jobs:
-            destroy:
-              timeout: 0
-              elastic_profile_id: k8-agent-aws
-              tasks:
-                - exec:
-                    arguments:
-                      - "-c"
-                      - "echo ${USERNAME} && echo ${blablabla}"                     
+                      - "aws ecs update-service --force-new-deployment --service ${SERVICE_NAME} --cluster ${CLUSTER_NAME} --deployment-configuration minimumHealthyPercent=0"
                     command: sh
                     run_if: passed
