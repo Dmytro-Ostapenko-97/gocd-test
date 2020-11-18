@@ -27,7 +27,6 @@ pipelines:
                 - exec:
                     arguments:
                       - "-c"
-                      - "echo ${CLUSTER_NAME}"
                       - "aws ecs list-tasks --desired-status 'RUNNING' --cluster ${CLUSTER_NAME} | grep arn | sed 's/[ \"]//g'"
                     command: sh
                     run_if: passed
